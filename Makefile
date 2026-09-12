@@ -1,9 +1,9 @@
 CC = gcc
-CFLAGS = $(shell pkg-config --cflags gtk4)
-LIBS = $(shell pkg-config --libs gtk4)
+CFLAGS = $(shell pkg-config --cflags sdl2)
+LIBS = $(shell pkg-config --libs sdl2)
 
 main: main.c
 	$(CC) $(CFLAGS) main.c -o main $(LIBS)
 
 clean:
-	rm -f hello_world
+	rm -f main
