@@ -26,7 +26,7 @@ void player_handle_event(
     const SDL_Event *event
 );
 
-void player_handler_input(Player *player);
+void player_handle_input(Player *player);
 
 void player_update(
     Player *player,

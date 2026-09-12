@@ -2,7 +2,10 @@
 #include "config.h"
 #include "player.h"
 
+#include <SDL2/SDL.h>
 #include <SDL2/SDL_events.h>
+#include <SDL2/SDL_render.h>
+#include <SDL2/SDL_video.h>
 #include <stdio.h>
 
 static void game_handle_events(Game *game);
@@ -80,7 +83,7 @@ void game_run(Game *game)
 
         game_handle_events(game);
 
-        player_handler_input(&game->player);
+        player_handle_input(&game->player);
         
         game_update(game, dt);
         game_render(game);
@@ -116,4 +119,51 @@ static void game_update(Game *game, float dt)
         &game->player,
         dt
     );
+}
+
+static void game_render(Game *game)
+{   
+    // Hintergrund
+    SDL_SetRenderDrawColor(
+        game->renderer,
+        30, 30, 40, 255
+    );
+
+    // Alten Frame löschen
+    SDL_RenderClear(game->renderer);
+
+    //Boden
+    SDL_FRect ground = {
+        0.0f,
+        550.0f,
+        WINDOW_WIDTH,
+        55.0f
+    };
+
+    SDL_SetRenderDrawColor(
+        game->renderer, 
+        100, 200, 100, 255
+    );
+
+    SDL_RenderFillRectF(
+        game->renderer,
+        &ground
+    );
+
+    //Player
+    player_render(
+        &game->player, 
+        game->renderer
+    );
+
+    SDL_RenderPresent(game->renderer);
+
+}
+
+void game_cleanup(Game *game)
+{
+    SDL_DestroyRenderer(game->renderer);
+    SDL_DestroyWindow(game->window);
+
+    SDL_Quit();
 }

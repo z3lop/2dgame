@@ -2,6 +2,7 @@
 #include "config.h"
 #include <SDL2/SDL_events.h>
 #include <SDL2/SDL_render.h>
+#include <math.h>
 
 #define PLYER_SPEED 250.0f
 #define PLAYER_GRAVITY 1200.0f
@@ -48,6 +49,19 @@ void player_handle_event(
 void player_handle_input(Player *player) 
 {
     const Uint8 *keyboard = SDL_GetKeyboardState(NULL);
+
+    // Langsames Abschwellen der Geschwindigkeit
+    if (fabs(player->velocity_x) < 1.0f) {
+        player->velocity_x = 0.0f;
+    }
+    
+    else if (player->velocity_x > 0.0f) {
+        player->velocity_x -= 25.0f;
+    }
+
+    else if (player->velocity_x < 0.0f) {
+        player->velocity_x += 25.0f;
+    }
 
     if(keyboard[SDL_SCANCODE_A]) {
         player->velocity_x = -250.0f;
