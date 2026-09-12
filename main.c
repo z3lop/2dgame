@@ -23,6 +23,7 @@ typedef struct {
     float velocity_x;
     float velocity_y;
 
+    bool double_jump;
     bool on_ground;
 } Player;
 
@@ -81,14 +82,25 @@ void handle_input(Game *game, Player *player)
             game->running = false;
         }
 
-        if (event.type == SDL_KEYDOWN) {
-            if (event.key.keysym.sym == SDLK_SPACE &&
-                player->on_ground &&
-                event.key.repeat == 0 ) {
+        if (event.type == SDL_KEYDOWN &&
+            event.key.repeat == 0) {
 
-                player->velocity_y = -600.0f;
-                player->on_ground = false;
+            if (event.key.keysym.sym == SDLK_SPACE) {
+
+                /* normaler Sprung */
+                if (player->on_ground) {
+
+                    player->velocity_y = -500.0f;
+                    player->on_ground = false;
                 }
+
+                /* Double Jump */
+                else if (!player->double_jump) {
+
+                    player->velocity_y = -500.0f;
+                    player->double_jump = true;
+                }
+            }
         }
     }
     const Uint8 *keyboard = SDL_GetKeyboardState(NULL);
@@ -121,6 +133,7 @@ void update_player(Player *player, float dt)
 
         player->velocity_y = 0.0f;
         player->on_ground = true;
+        player->double_jump = false;
     }
 
     if (player->x < 0.0f) {
@@ -206,7 +219,8 @@ int main(void)
         .velocity_x = 0.0f,
         .velocity_y = 0.0f,
 
-        .on_ground = true
+        .on_ground = true,
+        .double_jump = false
     };
 
 
