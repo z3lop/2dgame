@@ -11,6 +11,7 @@
 #include "world.h"
 #include "physics.h"
 #include "config.h"
+#include "camera.h"
 
 
 typedef struct {
@@ -20,6 +21,7 @@ typedef struct {
     bool running;
     Player player;
     World world;
+    Camera camera;
 } Game;
 
 bool game_init(Game *game);

@@ -38,6 +38,10 @@ static void physics_move_x(
             player->velocity_x = 0.0f;
         }
     }
+    if (collision_player_left(player)) {
+        player->x = 0.0f;
+        player->velocity_x = 0.0f;
+    }
 }
 
 static void physics_move_y(

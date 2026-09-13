@@ -12,4 +12,8 @@ bool collision_player_object(
     const WorldObject *object
 );
 
+bool collision_player_left(
+    const Player *player
+);
+
 #endif

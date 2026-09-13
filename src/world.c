@@ -21,6 +21,9 @@ void world_add_object(
 void world_init(World *world)
 {
     world->object_count = 0;
+    world->width = 3000.0f;
+    world->height = 1000.0f;
+
 
     world_add_object(
         world, 

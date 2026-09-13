@@ -13,6 +13,10 @@ typedef struct {
 typedef struct {
     WorldObject objects[MAX_WORLD_OBJECTS];
     int object_count;
+
+    float width;
+    float height;
+    
 } World;
 
 void world_init(World *world);

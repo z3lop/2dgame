@@ -44,6 +44,7 @@ bool game_init(Game *game)
     game->running = true;
     player_init(&game->player);
     world_init(&game->world);
+    camera_init(&game->camera, WINDOW_WIDTH, WINDOW_HEIGHT);
 
     return true;
 }
@@ -116,6 +117,17 @@ static void game_update(Game *game, float dt)
     if (game->player.on_ground) {
         game->player.double_jump = false;
     }
+
+    float player_center_x = 
+        game->player.x + game->player.width / 2.0f;
+    float player_center_y =
+        game->player.y + game->player.height / 2.0f;
+
+    camera_update(
+        &game->camera, 
+        player_center_x, player_center_y, 
+        game->world.width, game->world.height
+    );
 }
 
 static void game_render_world(Game *game)
@@ -129,8 +141,8 @@ static void game_render_world(Game *game)
         WorldObject *object = &game->world.objects[i];
 
         SDL_FRect rect = {
-            object->x, 
-            object->y,
+            object->x - game->camera.x, 
+            object->y - game->camera.y / 3.0f,
             object->width,
             object->height
         };
@@ -155,6 +167,7 @@ static void game_render(Game *game)
     //Player
     player_render(
         &game->player, 
+        &game->camera,
         game->renderer
     );
 

@@ -5,6 +5,8 @@
 #include <SDL2/SDL_events.h>
 #include <stdbool.h>
 
+#include "camera.h"
+
 typedef struct {
     float x;
     float y;
@@ -30,6 +32,7 @@ void player_handle_input(Player *player);
 
 void player_render(
     const Player *player,
+    const Camera *camera,
     SDL_Renderer *renderer
 );
 

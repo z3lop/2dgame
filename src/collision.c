@@ -12,7 +12,13 @@ bool collision_player_object(
         player->y + player->height > object-> y;
 }
 
-
+bool collision_player_left(
+    const Player *player
+)
+{
+    return
+        player->x < 0.0f;
+}
 
 
 

@@ -71,11 +71,15 @@ void player_handle_input(Player *player)
     }
 }
 
-void player_render(const Player *player, SDL_Renderer *renderer)
+void player_render(
+    const Player *player, 
+    const Camera *camera,
+    SDL_Renderer *renderer
+)
 {
     SDL_FRect player_rect = {
-        player->x,
-        player->y,
+        player->x - camera->x,
+        player->y - camera->y / 3.0f,
         player->width,
         player->height
     };
