@@ -1,5 +1,5 @@
-#include "player.h"
-#include "config.h"
+#include "../include/player.h"
+#include "../include/config.h"
 #include <SDL2/SDL_events.h>
 #include <SDL2/SDL_render.h>
 #include <math.h>

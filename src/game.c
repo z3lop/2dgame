@@ -1,6 +1,6 @@
-#include "game.h"
-#include "config.h"
-#include "player.h"
+#include "../include/game.h"
+#include "../include/config.h"
+#include "../include/player.h"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_events.h>
