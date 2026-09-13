@@ -1,9 +1,16 @@
 #ifndef GAME_H
+#define GAME_H
 
 #include <SDL2/SDL.h>
-#include <stdbool.h>
+#include <SDL2/SDL_events.h>
+#include <SDL2/SDL_render.h>
+#include <SDL2/SDL_video.h>
+#include <stdio.h>
 
 #include "player.h"
+#include "world.h"
+#include "physics.h"
+#include "config.h"
 
 
 typedef struct {
@@ -12,6 +19,7 @@ typedef struct {
 
     bool running;
     Player player;
+    World world;
 } Game;
 
 bool game_init(Game *game);

@@ -28,11 +28,6 @@ void player_handle_event(
 
 void player_handle_input(Player *player);
 
-void player_update(
-    Player *player,
-    float dt
-);
-
 void player_render(
     const Player *player,
     SDL_Renderer *renderer

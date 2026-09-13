@@ -1,12 +1,6 @@
 #include "../include/game.h"
-#include "../include/config.h"
-#include "../include/player.h"
-
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_events.h>
+#include <SDL2/SDL_rect.h>
 #include <SDL2/SDL_render.h>
-#include <SDL2/SDL_video.h>
-#include <stdio.h>
 
 static void game_handle_events(Game *game);
 static void game_update(Game *game, float dt);
@@ -49,6 +43,7 @@ bool game_init(Game *game)
 
     game->running = true;
     player_init(&game->player);
+    world_init(&game->world);
 
     return true;
 }
@@ -115,10 +110,33 @@ static void game_handle_events(Game *game)
 
 static void game_update(Game *game, float dt) 
 {
-    player_update(
-        &game->player,
-        dt
+    physics_update_player(
+        &game->player, &game->world, dt);
+
+    if (game->player.on_ground) {
+        game->player.double_jump = false;
+    }
+}
+
+static void game_render_world(Game *game)
+{
+    SDL_SetRenderDrawColor(
+        game->renderer, 
+        100, 200, 100, 255
     );
+
+    for (int i = 0; i < game->world.object_count; i++) {
+        WorldObject *object = &game->world.objects[i];
+
+        SDL_FRect rect = {
+            object->x, 
+            object->y,
+            object->width,
+            object->height
+        };
+
+        SDL_RenderFillRectF(game->renderer, &rect);
+    }
 }
 
 static void game_render(Game *game)
@@ -132,23 +150,7 @@ static void game_render(Game *game)
     // Alten Frame löschen
     SDL_RenderClear(game->renderer);
 
-    //Boden
-    SDL_FRect ground = {
-        0.0f,
-        550.0f,
-        WINDOW_WIDTH,
-        55.0f
-    };
-
-    SDL_SetRenderDrawColor(
-        game->renderer, 
-        100, 200, 100, 255
-    );
-
-    SDL_RenderFillRectF(
-        game->renderer,
-        &ground
-    );
+    game_render_world(game);
 
     //Player
     player_render(
