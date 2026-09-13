@@ -71,26 +71,3 @@ void player_handle_input(Player *player)
     }
 }
 
-void player_render(
-    const Player *player, 
-    const Camera *camera,
-    SDL_Renderer *renderer
-)
-{
-    SDL_FRect player_rect = {
-        player->x - camera->x,
-        player->y - camera->y / 3.0f,
-        player->width,
-        player->height
-    };
-
-    SDL_SetRenderDrawColor(
-        renderer, 
-        255, 100, 100, 255
-    );
-
-    SDL_RenderFillRectF(
-        renderer,
-        &player_rect
-    );
-}

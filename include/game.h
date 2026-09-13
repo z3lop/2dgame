@@ -12,6 +12,7 @@
 #include "physics.h"
 #include "config.h"
 #include "camera.h"
+#include "render.h"
 
 
 typedef struct {

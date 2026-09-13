@@ -130,48 +130,13 @@ static void game_update(Game *game, float dt)
     );
 }
 
-static void game_render_world(Game *game)
-{
-    SDL_SetRenderDrawColor(
-        game->renderer, 
-        100, 200, 100, 255
-    );
-
-    for (int i = 0; i < game->world.object_count; i++) {
-        WorldObject *object = &game->world.objects[i];
-
-        SDL_FRect rect = {
-            object->x - game->camera.x, 
-            object->y - game->camera.y / 3.0f,
-            object->width,
-            object->height
-        };
-
-        SDL_RenderFillRectF(game->renderer, &rect);
-    }
-}
-
 static void game_render(Game *game)
 {   
-    // Hintergrund
-    SDL_SetRenderDrawColor(
-        game->renderer,
-        30, 30, 40, 255
-    );
-
-    // Alten Frame löschen
-    SDL_RenderClear(game->renderer);
-
-    game_render_world(game);
-
-    //Player
-    player_render(
+    render_frame(
+        game->renderer, 
         &game->player, 
-        &game->camera,
-        game->renderer
-    );
-
-    SDL_RenderPresent(game->renderer);
+        &game->world, 
+        &game->camera);
 
 }
 
