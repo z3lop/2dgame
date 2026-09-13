@@ -29,6 +29,10 @@ void world_init(World *world)
         world, 
         0.0f, 550.0f, 800.0f, 50.0f);
 
+    /* Keep the view above the underside of the ground, even on a fall. */
+    world->camera_bottom =
+        world->objects[0].y + world->objects[0].height;
+
     world_add_object(
         world, 
         200.0f, 430.0f, 200.0f, 30.0f);

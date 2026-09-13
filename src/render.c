@@ -58,7 +58,7 @@ static void render_world(
 
         SDL_FRect rect = {
             object->x - camera->x, 
-            object->y - camera->y / 3.0f,
+            object->y - camera->y,
             object->width,
             object->height
         };
@@ -75,7 +75,7 @@ static void render_player(
 {
     SDL_FRect player_rect = {
         player->x - camera->x,
-        player->y - camera->y / 3.0f,
+        player->y - camera->y,
         player->width,
         player->height
     };
