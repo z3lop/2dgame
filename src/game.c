@@ -126,7 +126,7 @@ static void game_update(Game *game, float dt)
     camera_update(
         &game->camera, 
         player_center_x, player_center_y, 
-        game->world.width, game->world.height
+        game->world.width, game->world.camera_bottom
     );
 }
 

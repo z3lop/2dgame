@@ -114,3 +114,18 @@ Die Struktur soll später einfach erweitert werden können, zum Beispiel um:
 - Kamera
 - Collectibles
 - bewegliche Plattformen
+
+## Kamera
+
+Die Kamera setzt die Spielermitte vertikal auf 75 % der Fensterhöhe,
+sodass mehr Raum oberhalb sichtbar ist. In `src/camera.c` lässt sich dieser
+Anteil anpassen. Am Boden begrenzt `World.camera_bottom` den Bildausschnitt
+auf die Bodenunterkante (aktuell Y = 600), damit kein leerer Raum darunter
+sichtbar wird. Die Grenze wird in `world_init` aus dem Bodenobjekt berechnet;
+`World.height` bleibt als Weltgröße unverändert. Oberhalb darf die Kamera
+negative Y-Koordinaten annehmen, damit sie hohen Sprüngen folgen kann.
+
+Spieler und Welt werden mit derselben Verschiebung `world_y - camera->y`
+gezeichnet. Zum Prüfen `make rebuild` ausführen, am Boden laufen, auf beide
+Plattformen springen und einen Doppelsprung machen. Auch beim Fallen rechts
+vom Boden bleibt die Kamera an der Bodenunterkante begrenzt.

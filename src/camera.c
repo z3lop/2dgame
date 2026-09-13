@@ -7,7 +7,7 @@ void camera_init(
 )
 {
     camera->x = 0.0f;
-    camera->y = height/2.0f;
+    camera->y = 0.0f;
 
     camera->width = width;
     camera->height= height;
@@ -26,7 +26,7 @@ void camera_update(
         target_x - camera->width / 2.0f;
     
     camera->y = 
-        target_y - camera->height / 2.0f;
+        target_y - camera->height * 0.75f;
 
     if (camera->x < 0.0f) {
         camera->x = 0.0f;
