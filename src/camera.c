@@ -26,7 +26,7 @@ void camera_update(
         target_x - camera->width / 2.0f;
     
     camera->y = 
-        target_y - camera->height * 0.75f;
+        target_y - camera->height * 0.5f;
 
     if (camera->x < 0.0f) {
         camera->x = 0.0f;
