@@ -20,6 +20,7 @@ void player_init(Player *player)
     
     player->on_ground = true;
     player->double_jump = false;
+    player->wall_slide = false;
 }
 
 void player_handle_event(

@@ -27,21 +27,55 @@ void world_init(World *world)
 
     world_add_object(
         world, 
-        0.0f, 550.0f, 800.0f, 50.0f);
+        0.0f, 550.0f, 600.0f, 50.0f);
 
+    world_add_object(
+        world, 
+        1000.0f, 550.0f, 600.0f, 50.0f);
+
+    /* Keep the view above the underside of the ground, even on a fall. */
+    world->camera_bottom =
+        world->objects[0].y + world->objects[0].height;
+    
+    //Platform 1
     world_add_object(
         world, 
         200.0f, 430.0f, 200.0f, 30.0f);
     
-        /* zweite Plattform */
+    /* zweite Plattform */
     world_add_object(
         world,
         500.0f, 350.0f, 180.0f, 30.0f
     );
 
-    /* Wand */
+    /* Wand 0*/
     world_add_object(
         world,
-        700.0f, 400.0f, 40.0f, 150.0f
+        700.0f, 50.0f, 40.0f, 200.0f
     );
+
+    /* Wand 1*/
+    world_add_object(
+        world,
+        500.0f, -100.0f, 40.0f, 200.0f
+    );
+
+    /* Wand 2*/
+    world_add_object(
+        world,
+        700.0f, -250.0f, 40.0f, 200.0f
+    );
+
+        /* Wand 3*/
+    world_add_object(
+        world,
+        500.0f, -400.0f, 40.0f, 200.0f
+    );
+
+    /* Ebene */
+    world_add_object(
+        world, 
+        700.0f, -400.0f, 200.0f, 30.0f);
+
+
 }
