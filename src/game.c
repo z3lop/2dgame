@@ -110,7 +110,11 @@ static void game_handle_events(Game *game)
 }
 
 static void game_update(Game *game, float dt) 
-{
+{   
+    world_update_moving_objects(
+        &game->world, dt
+    );
+
     physics_update_player(
         &game->player, &game->world, dt);
 

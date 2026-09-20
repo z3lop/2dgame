@@ -21,6 +21,8 @@ void player_init(Player *player)
     player->on_ground = true;
     player->double_jump = false;
     player->wall_slide = false;
+
+    player->riding_platform = -1;
 }
 
 void player_handle_event(

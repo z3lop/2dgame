@@ -10,4 +10,9 @@ void physics_update_player(
     float dt
 );
 
+void world_update_moving_objects(
+    World *world,
+    float dt
+);
+
 #endif

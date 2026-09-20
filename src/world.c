@@ -1,4 +1,5 @@
 #include "../include/world.h"
+#include <SDL2/SDL_rect.h>
 #include <stdbool.h>
 
 void world_add_object(
@@ -120,5 +121,25 @@ void world_init(World *world)
         world, 
         700.0f, -400.0f, 200.0f, 30.0f);
 
+    SDL_FPoint platform_path[] = {
+        { 800.0f, 400.0f },
+        { 1200.0f, 400.0f },
+        { 1200.0f, 200.0f }
+    };
+
+    world_add_moving_object(
+        world,
+
+        800.0f, 400.0f,     // Startposition
+        150.0f, 30.0f,      // Größe
+
+        platform_path,
+
+        1,                   // nächstes Ziel
+        3,                   // Anzahl Punkte
+
+        100.0f,              // Geschwindigkeit
+        true                 // Loop
+    );
 
 }

@@ -11,6 +11,56 @@ static void physics_apply_gravity(Player *player, float dt)
     player->velocity_y += PLAYER_GRAVITY * dt;
 }
 
+static bool physics_resolve_x_collision(
+    Player *player,
+    const WorldObject *object
+)
+{
+    if (!collision_player_object(player, object)) {
+        return false;
+    }
+
+    // Bei Kollision Player verschieben
+    if (player->velocity_x > 0.0f) {
+        player->x = object->x - player->width;
+
+        player->velocity_x = 0.0f;
+    }
+    else if (player->velocity_x < 0.0f) {
+        player->x = object->x + object->width;
+
+        player->velocity_x = 0.0f;
+    }
+
+    return true;
+}
+
+static bool physics_resolve_y_collision(
+    Player *player,
+    const WorldObject *object
+)
+{
+    if (!collision_player_object(player, object)) {
+        // gibt es keine Kollision, checkt er das nächste Objekt
+        return false;
+    }
+    // Bei Kollision Player verschieben
+    if (player->velocity_y > 0.0f) {
+        player->y = object->y - player->height;
+
+        player->velocity_y = 0.0f;
+        player->on_ground = true;
+    } else if (player->velocity_y < 0.0f) {
+
+        player->y =
+            object->y + object->height;
+
+        player->velocity_y = 0.0f;
+    }
+
+    return true;
+}
+
 static void physics_move_x(
     Player *player,
     const World *world,
@@ -20,32 +70,30 @@ static void physics_move_x(
     player->x += player->velocity_x * dt;
     bool touch_wall = false;
 
+    // static objects
     for (int i = 0; i < world->object_count; i++) {
         const WorldObject *object = &world->objects[i];
 
-        if (!collision_player_object(
-            player, 
-            object
+        if (physics_resolve_x_collision(
+            player, object
         )) {
-            // gibt es keine Kollision, checkt er das nächste Objekt
-            continue;
-        }
-
-        touch_wall = true;
-
-        // Bei Kollision Player verschieben
-        if (player->velocity_x > 0.0f) {
-            player->x = object->x - player->width;
-
-            player->velocity_x = 0.0f;
-        }
-        else if (player->velocity_x < 0.0f) {
-            player->x = object->x + object->width;
-
-            player->velocity_x = 0.0f;
+            touch_wall = true;
         }
 
     }
+
+    for (int i = 0; i < world->moving_count; i++) {
+        const WorldObject *object = &world->moving_objects[i].object;
+
+        if (physics_resolve_x_collision(
+            player, object
+        )) {
+            touch_wall = true;
+        }
+
+    }
+
+
     
     player->wall_slide = touch_wall && !
                          player->on_ground && 
@@ -79,29 +127,37 @@ static void physics_move_y(
     for (int i = 0; i < world->object_count; i++) {
         const WorldObject *object = &world->objects[i];
 
-        if (!collision_player_object(
-            player, object
-        )) {
-            // gibt es keine Kollision, checkt er das nächste Objekt
-            continue;
-        }
-        // Bei Kollision Player verschieben
-        if (player->velocity_y > 0.0f) {
-            player->y = object->y - player->height;
-
-            player->velocity_y = 0.0f;
-            player->on_ground = true;
-        } else if (player->velocity_y < 0.0f) {
-
-            player->y =
-                object->y + object->height;
-
-            player->velocity_y = 0.0f;
-        }
-
+        physics_resolve_y_collision(player, object);
     }
+
+    for (int i = 0; i < world->moving_count; i++) {
+        const WorldObject *object = &world->moving_objects[i].object;
+
+        physics_resolve_y_collision(player, object);
+    }
+
 }
 
+static void physics_carry_player(
+    Player *player,
+    const World *world
+)
+{
+    if (player->riding_platform < 0) {
+        return;
+    }
+
+    if (player->riding_platform >= world->moving_count) {
+        player->riding_platform = -1;
+        return;
+    }
+
+    const MovingObject *platform = 
+        &world->moving_objects[player->riding_platform];
+
+    player->x += platform->delta_x;
+    player->y += platform->delta_y;
+}
 
 void physics_update_player(
     Player *player,

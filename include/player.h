@@ -20,6 +20,8 @@ typedef struct {
     bool double_jump;
     bool on_ground;
 
+    int riding_platform;
+
     bool wall_slide;
 } Player;
 

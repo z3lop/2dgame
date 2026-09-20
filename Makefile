@@ -2,6 +2,7 @@ CC = gcc
 
 CFLAGS = -Wall -Wextra -Wpedantic -std=c11 -Iinclude
 SDL_FLAGS = $(shell pkg-config --cflags --libs sdl2)
+LIBS = -lm
 
 SRC_DIR = src
 BUILD_DIR = build
@@ -16,7 +17,7 @@ all: $(TARGET)
 
 
 $(TARGET): $(OBJECTS)
-	$(CC) $(OBJECTS) -o $(TARGET) $(SDL_FLAGS)
+	$(CC) $(OBJECTS) -o $(TARGET) $(SDL_FLAGS) $(LIBS)
 
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c

@@ -1,4 +1,5 @@
 #include "../include/render.h"
+#include <SDL2/SDL_rect.h>
 #include <SDL2/SDL_render.h>
 
 static void render_world(
@@ -64,6 +65,22 @@ static void render_world(
         };
 
         SDL_RenderFillRectF(renderer, &rect);
+    }
+
+    for (int i = 0; i < world->moving_count; i++) {
+        const MovingObject *moving_object =
+            &world->moving_objects[i];
+        
+        SDL_FRect rect = {
+            moving_object->object.x - camera->x,
+            moving_object->object.y - camera->y,
+            moving_object->object.width,
+            moving_object->object.height
+
+        };
+
+        SDL_RenderFillRectF(renderer, &rect);
+
     }
 }
 
