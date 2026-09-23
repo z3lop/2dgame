@@ -71,10 +71,6 @@ void world_init(World *world)
 
     world_add_object(
         world, 
-        0.0f, 550.0f, 600.0f, 50.0f);
-
-    world_add_object(
-        world, 
         1000.0f, 550.0f, 600.0f, 50.0f);
 
     /* Keep the view above the underside of the ground, even on a fall. */
@@ -142,4 +138,7 @@ void world_init(World *world)
         true                 // Loop
     );
 
+    world_add_object(
+        world, 
+        0.0f, 550.0f, 600.0f, 50.0f);
 }

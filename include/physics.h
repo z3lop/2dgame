@@ -4,6 +4,12 @@
 #include "player.h"
 #include "world.h"
 
+typedef enum {
+    Y_COLLISION_NONE,
+    Y_COLLISION_GROUND,
+    Y_COLLISION_CEILING,
+} YCollision;
+
 void physics_update_player(
     Player *player,
     const World *world,

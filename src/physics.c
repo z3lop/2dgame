@@ -35,30 +35,38 @@ static bool physics_resolve_x_collision(
     return true;
 }
 
-static bool physics_resolve_y_collision(
+static YCollision physics_resolve_y_collision(
     Player *player,
     const WorldObject *object
 )
 {
     if (!collision_player_object(player, object)) {
         // gibt es keine Kollision, checkt er das nächste Objekt
-        return false;
+        return Y_COLLISION_NONE;
     }
-    // Bei Kollision Player verschieben
+
+    // Spieler fällt auf Objekt
     if (player->velocity_y > 0.0f) {
         player->y = object->y - player->height;
 
         player->velocity_y = 0.0f;
         player->on_ground = true;
-    } else if (player->velocity_y < 0.0f) {
+
+        return Y_COLLISION_GROUND;
+
+    } 
+    
+    // Spieler stößt gegen Objekt
+    if (player->velocity_y < 0.0f) {
 
         player->y =
             object->y + object->height;
 
         player->velocity_y = 0.0f;
+        return Y_COLLISION_CEILING;
     }
 
-    return true;
+    return Y_COLLISION_NONE;
 }
 
 static void physics_move_x(
@@ -83,6 +91,12 @@ static void physics_move_x(
     }
 
     for (int i = 0; i < world->moving_count; i++) {
+        
+        // Man kann in keine Wand laufen, auf der man steht
+        if (player->riding_platform == i) {
+            continue;
+        }
+        
         const WorldObject *object = &world->moving_objects[i].object;
 
         if (physics_resolve_x_collision(
@@ -93,8 +107,6 @@ static void physics_move_x(
 
     }
 
-
-    
     player->wall_slide = touch_wall && !
                          player->on_ground && 
                          player->velocity_y > 0.0f;
@@ -124,6 +136,10 @@ static void physics_move_y(
 {
     player->y += player->velocity_y * dt;
 
+    player->on_ground = false;
+    player->riding_platform = -1;
+
+    // statische Objekte
     for (int i = 0; i < world->object_count; i++) {
         const WorldObject *object = &world->objects[i];
 
@@ -133,7 +149,12 @@ static void physics_move_y(
     for (int i = 0; i < world->moving_count; i++) {
         const WorldObject *object = &world->moving_objects[i].object;
 
-        physics_resolve_y_collision(player, object);
+        YCollision collision = 
+            physics_resolve_y_collision(player, object);
+
+        if (collision == Y_COLLISION_GROUND) {
+            player->riding_platform = i;
+        }
     }
 
 }
@@ -164,7 +185,8 @@ void physics_update_player(
     const World *world,
     float dt
 )
-{
+{   
+    physics_carry_player(player, world);
     physics_apply_gravity(player, dt);
     physics_move_x(player, world, dt);
     physics_limit_wall_slide(player);
