@@ -130,11 +130,6 @@ static void game_handle_events(Game *game)
                 
             game->running = false;
         }
-        
-            player_handle_event(
-                &game->player, 
-                &event
-            );
 
         if (game->state == GAME_STATE_GAME_OVER)  {
             if (event.type == SDL_KEYDOWN &&
@@ -144,6 +139,11 @@ static void game_handle_events(Game *game)
                     game_reset(game);
                 }
         };
+        
+        player_handle_event(
+            &game->player, 
+            &event
+        );
     }
 }
 

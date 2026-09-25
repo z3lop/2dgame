@@ -107,8 +107,8 @@ static void physics_move_x(
 
     }
 
-    player->wall_slide = touch_wall && !
-                         player->on_ground && 
+    player->wall_slide = touch_wall &&
+                         !player->on_ground && 
                          player->velocity_y > 0.0f;
 
     if (player->wall_slide) {
@@ -206,7 +206,7 @@ void world_update_moving_objects(
         }
 
         SDL_FPoint target = 
-        object->path[object->next_point];
+            object->path[object->next_point];
         
         float old_x = object->object.x;
         float old_y = object->object.y;
@@ -243,6 +243,10 @@ void world_update_moving_objects(
         float movement = object->speed * dt;
         // Ziel überschossen
         if (movement >= distance) {
+
+            object->delta_x = dx;
+            object->delta_y = dy;
+            
             object->object.x = target.x;
             object->object.y = target.y;
 

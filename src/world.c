@@ -1,6 +1,10 @@
 #include "../include/world.h"
 #include <SDL2/SDL_rect.h>
+#include <math.h>
 #include <stdbool.h>
+
+#define CIRCLE_POINTS 64
+#define PI 3.14159265358979323846f
 
 void world_add_object(
     World *world, 
@@ -126,6 +130,37 @@ void world_init(World *world)
 
         100.0f,              // Geschwindigkeit
         true                 // Loop
+    );
+
+    // add platform which moves in a circle
+    SDL_FPoint platform_path2[CIRCLE_POINTS];
+
+    float center_x = 1200.0f;
+    float center_y = 50.0f;
+    float radius = 350.0f;
+
+    for (int i = 0; i < CIRCLE_POINTS; i++) {
+        float angle = 
+            ((float) i / CIRCLE_POINTS) * 2.0f * (float)PI;
+        
+        platform_path2[i].x =
+            center_x + cosf(angle) * radius;
+        
+        platform_path2[i].y = 
+            center_y + sinf(angle) * radius;
+    }
+
+    world_add_moving_object(
+        world,
+
+        1600.0f, 400.0f,
+        150.0f, 30.0f,
+
+        platform_path2,
+
+        1, CIRCLE_POINTS,
+        100.0f,
+        true
     );
 
     world_add_object(
