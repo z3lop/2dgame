@@ -92,31 +92,20 @@ void world_init(World *world)
     /* Wand 0*/
     world_add_object(
         world,
-        700.0f, 50.0f, 40.0f, 200.0f
+        700.0f, -200.0f, 40.0f, 450.0f
     );
 
     /* Wand 1*/
     world_add_object(
         world,
-        500.0f, -100.0f, 40.0f, 200.0f
+        500.0f, -300.0f, 40.0f, 450.0f
     );
 
-    /* Wand 2*/
-    world_add_object(
-        world,
-        700.0f, -250.0f, 40.0f, 200.0f
-    );
-
-        /* Wand 3*/
-    world_add_object(
-        world,
-        500.0f, -400.0f, 40.0f, 200.0f
-    );
 
     /* Ebene */
     world_add_object(
         world, 
-        700.0f, -400.0f, 200.0f, 30.0f);
+        700.0f, -200.0f, 200.0f, 30.0f);
 
     SDL_FPoint platform_path[] = {
         { 800.0f, 400.0f },
