@@ -1,7 +1,7 @@
 CC = gcc
 
 CFLAGS = -Wall -Wextra -Wpedantic -std=c11 -Iinclude
-SDL_FLAGS = $(shell pkg-config --cflags --libs sdl2)
+SDL_FLAGS = $(shell pkg-config --cflags --libs sdl2 SDL2_ttf)
 LIBS = -lm
 
 SRC_DIR = src

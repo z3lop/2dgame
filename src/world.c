@@ -67,6 +67,7 @@ void world_init(World *world)
     world->moving_count = 0;
     world->width = 3000.0f;
     world->height = 1000.0f;
+    world->death_y = 1000.0f;
 
 
     world_add_object(
@@ -141,4 +142,8 @@ void world_init(World *world)
     world_add_object(
         world, 
         0.0f, 550.0f, 600.0f, 50.0f);
+
+    world_add_object(
+        world, 
+        1000.0f, 550.0f, 600.0f, 50.0f);
 }

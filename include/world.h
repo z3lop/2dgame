@@ -42,6 +42,8 @@ typedef struct {
     float width;
     float height;
 
+    float death_y;
+
     /* Lowest world coordinate visible at the bottom of the camera. */
     float camera_bottom;
     

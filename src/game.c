@@ -1,6 +1,7 @@
 #include "../include/game.h"
 #include <SDL2/SDL_rect.h>
 #include <SDL2/SDL_render.h>
+#include <SDL2/SDL_ttf.h>
 
 static void game_handle_events(Game *game);
 static void game_update(Game *game, float dt);
@@ -12,6 +13,10 @@ bool game_init(Game *game)
         printf("SDL_Init error: %s\n", SDL_GetError());
         return false;
     }
+
+    if (TTF_Init() != 0) {
+        printf("TTF_Init error:%s\n", TTF_GetError());
+    } 
 
     game -> window = SDL_CreateWindow(
         "Jump", 
@@ -33,6 +38,16 @@ bool game_init(Game *game)
         SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
     );
 
+    game->title_font = TTF_OpenFont(
+        "assets/fonts/MightySouly.ttf", 
+        TITLE_FONT_SIZE
+    );
+
+    game->text_font = TTF_OpenFont(
+        "assets/fonts/Inconsolata.ttf", 
+        TEXT_FONT_SIZE
+    );
+
     if (!game->renderer) {
         printf("Renderer error: %s\n", SDL_GetError());
         SDL_DestroyWindow(game->window);
@@ -42,6 +57,7 @@ bool game_init(Game *game)
     }
 
     game->running = true;
+    game->state = GAME_STATE_PLAYING;
     player_init(&game->player);
     world_init(&game->world);
     camera_init(&game->camera, WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -87,6 +103,19 @@ void game_run(Game *game)
     }
 }
 
+static void game_reset(Game *game) 
+{
+    player_init(&game->player);
+    world_init(&game->world);
+    camera_init(
+        &game->camera, 
+        WINDOW_WIDTH, 
+        WINDOW_HEIGHT
+    );
+
+    game->state = GAME_STATE_PLAYING;
+}
+
 static void game_handle_events(Game *game) 
 {
     SDL_Event event;
@@ -106,11 +135,25 @@ static void game_handle_events(Game *game)
                 &game->player, 
                 &event
             );
+
+        if (game->state == GAME_STATE_GAME_OVER)  {
+            if (event.type == SDL_KEYDOWN &&
+                event.key.keysym.sym == SDLK_r &&
+                event.key.repeat == 0) {
+
+                    game_reset(game);
+                }
+        };
     }
 }
 
 static void game_update(Game *game, float dt) 
 {   
+    
+    if (game->state != GAME_STATE_PLAYING) {
+        return;
+    }
+    
     world_update_moving_objects(
         &game->world, dt
     );
@@ -120,6 +163,10 @@ static void game_update(Game *game, float dt)
 
     if (game->player.on_ground) {
         game->player.double_jump = false;
+    }
+
+    if (game->player.y > game->world.death_y) {
+        game->state = GAME_STATE_GAME_OVER;
     }
 
     float player_center_x = 
@@ -136,11 +183,21 @@ static void game_update(Game *game, float dt)
 
 static void game_render(Game *game)
 {   
-    render_frame(
-        game->renderer, 
-        &game->player, 
-        &game->world, 
-        &game->camera);
+    if (game->state == GAME_STATE_PLAYING) {
+        render_frame(
+            game->renderer, 
+            &game->player, 
+            &game->world, 
+            &game->camera);
+    }
+
+    else if (game->state == GAME_STATE_GAME_OVER) {
+        render_game_over(
+            game->renderer, 
+            game->title_font,
+            game->text_font
+        );
+    }
 
 }
 
@@ -150,4 +207,5 @@ void game_cleanup(Game *game)
     SDL_DestroyWindow(game->window);
 
     SDL_Quit();
+    TTF_Quit();
 }
