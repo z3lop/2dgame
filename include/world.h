@@ -4,10 +4,11 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_rect.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 #define MAX_WORLD_OBJECTS 128
 #define MAX_MOVING_OBJECTS 128
-#define MAX_PATH_POINTS 64
+#define MAX_PATH_POINTS 128
 
 typedef struct {
     float x;
@@ -33,11 +34,13 @@ typedef struct {
 } MovingObject;
 
 typedef struct {
-    WorldObject objects[MAX_WORLD_OBJECTS];
+    WorldObject *objects;
     int object_count;
+    int object_capacity;
 
-    MovingObject moving_objects[MAX_MOVING_OBJECTS];
+    MovingObject *moving_objects;
     int moving_count;
+    int moving_capacity;
 
     float width;
     float height;
@@ -71,5 +74,8 @@ void world_add_moving_object(
     float speed,
     bool loop
 );
+
+void world_destroy(World *world);
+bool world_allocate(World *world);
 
 #endif

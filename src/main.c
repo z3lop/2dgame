@@ -2,15 +2,22 @@
 
 int main(void)
 {
-    Game game;
+    Game *game = calloc(1, sizeof *game);
 
-    if (!game_init(&game)) {
+    if (game == NULL) {
+        fprintf(stderr, "Could not allocate Game\n");
         return 1;
     }
 
-    game_run(&game);
+    if (!game_init(game)) {
+        free(game);
+        return 1;
+    }
 
-    game_cleanup(&game);
+    game_run(game);
+
+    game_cleanup(game);
+    free(game);
 
     return 0;
 }

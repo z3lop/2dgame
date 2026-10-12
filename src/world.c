@@ -6,11 +6,57 @@
 #define CIRCLE_POINTS 64
 #define PI 3.14159265358979323846f
 
+bool world_allocate(World *world) 
+{
+    world->object_capacity = MAX_WORLD_OBJECTS;
+    world->moving_capacity = MAX_MOVING_OBJECTS;
+
+    world->object_count = 0;
+    world->moving_count = 0;
+
+    world->objects = calloc(
+        world->object_capacity,
+        sizeof *world->objects
+    );
+
+    world->moving_objects = calloc(
+        world->moving_capacity,
+        sizeof *world->moving_objects
+    );
+
+    if (!world->objects || !world->moving_objects) {
+        free(world->objects);
+        free(world->moving_objects);
+
+        world->objects = NULL;
+        world->moving_objects = NULL;
+
+        return false;
+    }
+
+    return true;
+}
+
+void world_destroy(World *world)
+{
+    free(world->objects);
+    free(world->moving_objects);
+
+    world->objects = NULL;
+    world->moving_objects = NULL;
+
+    world->object_count = 0;
+    world->moving_count = 0;
+
+    world->object_capacity = 0;
+    world->moving_capacity = 0;
+}
+
 void world_add_object(
     World *world, 
     float x, float y, float width, float height)
 {
-    if (world->object_count >= MAX_WORLD_OBJECTS) {
+    if (world->object_count >= world->object_capacity) {
         return;
     }
 
@@ -31,7 +77,7 @@ void world_add_moving_object(
     float speed, bool loop
 ) 
 {  
-    if (world->moving_count >= MAX_MOVING_OBJECTS) {
+    if (world->moving_count >= world->moving_capacity) {
         return;
     }
 

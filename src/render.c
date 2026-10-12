@@ -4,6 +4,8 @@
 #include <SDL2/SDL_surface.h>
 #include <SDL2/SDL_ttf.h>
 
+#include <stdio.h>
+
 static void render_world(
     SDL_Renderer *renderer,
     const World *world,
@@ -20,7 +22,9 @@ void render_frame(
     SDL_Renderer *renderer, 
     const Player *player, 
     const World *world, 
-    const Camera *camera
+    const Camera *camera,
+    TTF_Font *font,
+    int fps
 )
 {
     // Hintergrund
@@ -40,6 +44,26 @@ void render_frame(
         player, 
         camera
     );
+
+    // FPS oben links zeichnen
+    char fps_text[32];
+
+    snprintf(
+        fps_text,
+        sizeof fps_text,
+        "FPS: %d",
+        fps
+    );
+
+    if (font) {
+        render_text(
+            renderer,
+            font,
+            fps_text,
+            10.0f,
+            10.0f
+        );
+    }
 
     SDL_RenderPresent(renderer);
 

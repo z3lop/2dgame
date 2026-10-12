@@ -1,6 +1,9 @@
+.DEFAULT_GOAL := all
+
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Wpedantic -std=c11 -Iinclude
+CFLAGS = -Wall -Wextra -Wpedantic -std=c11 -g -O0 -Iinclude
+CFLAGS += -MMD -MP
 SDL_FLAGS = $(shell pkg-config --cflags --libs sdl2 SDL2_ttf)
 LIBS = -lm
 
@@ -11,6 +14,7 @@ TARGET = jump-run
 
 SOURCES = $(wildcard $(SRC_DIR)/*.c)
 OBJECTS = $(SOURCES:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
+-include $(OBJECTS:.o=.d)
 
 
 all: $(TARGET)

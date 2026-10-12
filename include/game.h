@@ -33,17 +33,13 @@ typedef struct {
     Player player;
     World world;
     Camera camera;
+
+    int fps;
 } Game;
 
 bool game_init(Game *game);
 void game_run(Game *game);
 void game_cleanup(Game *game);
-void render_text(
-    SDL_Renderer *renderer,
-    TTF_Font *font, 
-    const char *text,
-    float x,
-    float y
-);
+
 
 #endif

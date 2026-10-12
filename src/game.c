@@ -59,6 +59,13 @@ bool game_init(Game *game)
     game->running = true;
     game->state = GAME_STATE_PLAYING;
     player_init(&game->player);
+
+    if (!world_allocate(&game->world)){
+        fprintf(stderr, "Could not not allocate world");
+        world_destroy(&game->world);
+        return false;
+    };
+
     world_init(&game->world);
     camera_init(&game->camera, WINDOW_WIDTH, WINDOW_HEIGHT);
 
@@ -68,6 +75,9 @@ bool game_init(Game *game)
 void game_run(Game *game) 
 {
     Uint64 previous_time = SDL_GetPerformanceCounter();
+    
+    Uint32 fps_timer = SDL_GetTicks();
+    int frame_count = 0;
 
     while (game->running) {
 
@@ -98,6 +108,19 @@ void game_run(Game *game)
         player_handle_input(&game->player);
         
         game_update(game, dt);
+
+        // FPS berechnen
+        frame_count++;
+        Uint32 elapsed = SDL_GetTicks() - fps_timer;
+        if (elapsed >= 1000) {
+            game->fps = (int)(
+                frame_count *1000.0f / elapsed
+            );
+
+            frame_count = 0;
+            fps_timer = SDL_GetTicks();
+        }
+
         game_render(game);
 
     }
@@ -188,7 +211,9 @@ static void game_render(Game *game)
             game->renderer, 
             &game->player, 
             &game->world, 
-            &game->camera);
+            &game->camera,
+            game->text_font,
+            game->fps);
     }
 
     else if (game->state == GAME_STATE_GAME_OVER) {
@@ -203,9 +228,28 @@ static void game_render(Game *game)
 
 void game_cleanup(Game *game)
 {
-    SDL_DestroyRenderer(game->renderer);
-    SDL_DestroyWindow(game->window);
+
+    world_destroy(&game->world);
+
+    if (game->title_font) {
+        TTF_CloseFont(game->title_font);
+    }
+
+    if (game->text_font) {
+        TTF_CloseFont(game->text_font);
+    }
+
+    if (game->renderer) {
+        SDL_DestroyRenderer(game->renderer);
+    }
+
+    if (game->window) {
+        SDL_DestroyWindow(game->window);
+    }
+
+    if (TTF_WasInit()) {
+        TTF_Quit();
+    }
 
     SDL_Quit();
-    TTF_Quit();
 }
