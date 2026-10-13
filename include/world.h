@@ -6,9 +6,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-#define MAX_WORLD_OBJECTS 128
-#define MAX_MOVING_OBJECTS 128
-#define MAX_PATH_POINTS 128
+#include "../include/config.h"
 
 typedef struct {
     float x;

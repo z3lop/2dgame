@@ -12,6 +12,18 @@ bool collision_player_object(
         player->y + player->height > object-> y;
 }
 
+bool collision_torch_object(
+    WorldObject *torch,
+    const WorldObject *object
+)
+{
+    return
+    torch->x < object->x + object->width &&
+    torch->x + torch->width > object->x &&
+    torch->y < object->y + object->height &&
+    torch->y + torch->height > object-> y;
+}
+
 bool collision_player_left(
     const Player *player
 )

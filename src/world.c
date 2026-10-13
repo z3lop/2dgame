@@ -1,10 +1,8 @@
 #include "../include/world.h"
+#include "../include/config.h"
 #include <SDL2/SDL_rect.h>
 #include <math.h>
 #include <stdbool.h>
-
-#define CIRCLE_POINTS 64
-#define PI 3.14159265358979323846f
 
 bool world_allocate(World *world) 
 {

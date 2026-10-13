@@ -23,6 +23,8 @@ typedef struct {
     int riding_platform;
 
     bool wall_slide;
+    int facing;
+    
 } Player;
 
 void player_init(Player *player);

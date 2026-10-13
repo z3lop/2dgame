@@ -9,9 +9,6 @@
 #include "world.h"
 #include "camera.h"
 
-#define TITLE_FONT_SIZE 64
-#define TEXT_FONT_SIZE 28
-
 void render_frame(
     SDL_Renderer *renderer,
     const Player *player,

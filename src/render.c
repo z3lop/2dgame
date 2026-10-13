@@ -1,4 +1,6 @@
 #include "../include/render.h"
+#include "../include/config.h"
+
 #include <SDL2/SDL_rect.h>
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_surface.h>

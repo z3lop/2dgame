@@ -1,10 +1,10 @@
 #include "../include/physics.h"
 #include "../include/collision.h"
+#include "../include/config.h"
 #include <SDL2/SDL_rect.h>
 #include <stdbool.h>
 
-#define PLAYER_GRAVITY 1200.0f
-#define WALL_SLIDE_SPEED 240.0f
+
 
 static void physics_apply_gravity(Player *player, float dt)
 {

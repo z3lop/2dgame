@@ -4,9 +4,6 @@
 #include <SDL2/SDL_render.h>
 #include <math.h>
 
-#define PLAYER_SPEED 250.0f
-#define PLAYER_JUMP_VELOCITY -600.0f
-
 void player_init(Player *player)
 {
     player->width = 50.0f;
@@ -23,6 +20,7 @@ void player_init(Player *player)
     player->wall_slide = false;
 
     player->riding_platform = -1;
+    player->facing = 1;
 }
 
 void player_handle_event(
@@ -67,10 +65,12 @@ void player_handle_input(Player *player)
 
     if(keyboard[SDL_SCANCODE_A]) {
         player->velocity_x = -250.0f;
+        player->facing = -1;
     }
 
     if(keyboard[SDL_SCANCODE_D]) {
         player->velocity_x = 250.0f;
+        player->facing = 1;
     }
 }
 

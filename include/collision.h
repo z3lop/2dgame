@@ -12,6 +12,11 @@ bool collision_player_object(
     const WorldObject *object
 );
 
+bool collision_torch_object(
+    WorldObject *torch,
+    const WorldObject *object
+);
+
 bool collision_player_left(
     const Player *player
 );
