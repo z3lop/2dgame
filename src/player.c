@@ -6,11 +6,11 @@
 
 void player_init(Player *player)
 {
-    player->width = 50.0f;
-    player->height = 50.0f;
+    player->body->width = 50.0f;
+    player->body->height = 50.0f;
 
-    player->x = 375.0f;
-    player->y = GROUND_Y - player->height;
+    player->body->x = 375.0f;
+    player->body->y = GROUND_Y - player->body->height;
 
     player->velocity_x = 0.0f;
     player->velocity_y = 0.0f;

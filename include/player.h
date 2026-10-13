@@ -6,13 +6,10 @@
 #include <stdbool.h>
 
 #include "camera.h"
+#include "world.h"
 
 typedef struct {
-    float x;
-    float y;
-
-    float width;
-    float height;
+    WorldObject *body;
 
     float velocity_x;
     float velocity_y;
@@ -24,7 +21,7 @@ typedef struct {
 
     bool wall_slide;
     int facing;
-    
+
 } Player;
 
 void player_init(Player *player);

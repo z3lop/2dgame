@@ -249,10 +249,10 @@ static void render_player(
 )
 {
     SDL_FRect player_rect = {
-        player->x - camera->x,
-        player->y - camera->y,
-        player->width,
-        player->height
+        player->body->x - camera->x,
+        player->body->y - camera->y,
+        player->body->width,
+        player->body->height
     };
 
     SDL_SetRenderDrawColor(

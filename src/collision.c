@@ -12,16 +12,16 @@ bool collision_player_object(
         player->y + player->height > object-> y;
 }
 
-bool collision_torch_object(
-    WorldObject *torch,
-    const WorldObject *object
+bool collision_objects(
+    const WorldObject *a,
+    const WorldObject *b
 )
 {
     return
-    torch->x < object->x + object->width &&
-    torch->x + torch->width > object->x &&
-    torch->y < object->y + object->height &&
-    torch->y + torch->height > object-> y;
+    a->x < b->x + b->width &&
+    a->x + a->width > b->x &&
+    a->y < b->y + b->height &&
+    a->y + a->height > b-> y;
 }
 
 bool collision_player_left(
@@ -29,7 +29,7 @@ bool collision_player_left(
 )
 {
     return
-        player->x < 0.0f;
+        player->body->x < 0.0f;
 }
 
 

@@ -52,12 +52,12 @@ bool torch_throw(
     torch->body.height = 10.0f;
 
     torch->body.x =
-        player->x + player->width / 2.0f
+        player->body->x + player->body->width / 2.0f
         - torch->body.width / 2.0f
         + direction * 30.0f;
 
     torch->body.y =
-        player->y + player->height / 2.0f;
+        player->body->y + player->body->height / 2.0f;
 
     torch->velocity_x =
         direction * TORCH_THROW_SPEED;

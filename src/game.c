@@ -188,14 +188,14 @@ static void game_update(Game *game, float dt)
         game->player.double_jump = false;
     }
 
-    if (game->player.y > game->world.death_y) {
+    if (game->player.body->y > game->world.death_y) {
         game->state = GAME_STATE_GAME_OVER;
     }
 
     float player_center_x = 
-        game->player.x + game->player.width / 2.0f;
+        game->player.body->x + game->player.body->width / 2.0f;
     float player_center_y =
-        game->player.y + game->player.height / 2.0f;
+        game->player.body->y + game->player.body->height / 2.0f;
 
     camera_update(
         &game->camera, 
